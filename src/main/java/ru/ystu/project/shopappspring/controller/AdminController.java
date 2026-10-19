@@ -1,9 +1,11 @@
 package ru.ystu.project.shopappspring.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import ru.ystu.project.shopappspring.dto.UserForm;
 import ru.ystu.project.shopappspring.service.UserService;
 
 @Controller
@@ -20,5 +22,33 @@ public class AdminController {
     public String listUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "admin/users";
+    }
+
+    // НОВОЕ: форма создания
+    @GetMapping("/new")
+    public String newUserForm(Model model) {
+        model.addAttribute("userForm", new UserForm());
+        model.addAttribute("isEdit", false);
+        return "admin/user-form";
+    }
+
+    // НОВОЕ: обработка создания
+    @PostMapping
+    public String createUser(@Valid @ModelAttribute("userForm") UserForm form,
+                             BindingResult bindingResult,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isEdit", false);
+            return "admin/user-form";
+        }
+        try {
+            userService.createUser(form.getUsername(), form.getPassword(),
+                    form.getRole(), form.getFullName());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("isEdit", false);
+            return "admin/user-form";
+        }
+        return "redirect:/admin/users";
     }
 }

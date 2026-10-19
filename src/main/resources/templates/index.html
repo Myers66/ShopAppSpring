@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ShopApp — Главная</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/products}">Товары</a>
+        <a sec:authorize="hasRole('ADMIN')" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+           th:href="@{/admin/users}">Пользователи</a>
+        <a sec:authorize="isAnonymous()" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+           th:href="@{/login}">Войти</a>
+        <a sec:authorize="isAuthenticated()" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+           th:href="@{/logout}">Выйти</a>
+    </nav>
+
+    <h1>Добро пожаловать в ShopApp!</h1>
+    <p>Это учебное приложение для управления товарами и пользователями.</p>
+
+    <h2>Товары</h2>
+    <p th:if="${#lists.isEmpty(products)}">Товаров пока нет.</p>
+    <ul th:unless="${#lists.isEmpty(products)}">
+        <li th:each="product : ${products}">
+            <strong th:text="${product.name}">Название</strong> —
+            <span th:text="${product.price} + ' руб.'">0 руб.</span>
+            (остаток: <span th:text="${product.stockQuantity}">0</span>)
+            <p th:text="${product.description}">Описание</p>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

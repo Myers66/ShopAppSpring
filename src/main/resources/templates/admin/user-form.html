@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Пользователь</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/admin/users}">Назад к списку</a>
+    </nav>
+
+    <h1 th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Пользователь</h1>
+
+    <p class="error" th:if="${error}" th:text="${error}">Ошибка</p>
+
+    <form th:action="@{/admin/users}" th:object="${userForm}" method="post">
+
+        <label>Логин:</label><br>
+        <input type="text" th:field="*{username}" required>
+        <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+
+        <label>Пароль:</label><br>
+        <input type="password" th:field="*{password}" required>
+        <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+        <label>Роль:</label><br>
+        <select th:field="*{role}">
+            <option th:each="r : ${T(ru.ystu.project.shopappspring.model.Role).values()}"
+                    th:value="${r}" th:text="${r}">USER</option>
+        </select><br>
+
+        <label>Полное имя:</label><br>
+        <input type="text" th:field="*{fullName}"><br>
+
+        <input type="submit" value="Создать">
+        <a th:href="@{/admin/users}">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

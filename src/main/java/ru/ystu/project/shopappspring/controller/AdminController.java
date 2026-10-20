@@ -25,7 +25,6 @@ public class AdminController {
         return "admin/users";
     }
 
-    // Форма создания
     @GetMapping("/new")
     public String newUserForm(Model model) {
         model.addAttribute("userForm", new UserForm());
@@ -33,7 +32,6 @@ public class AdminController {
         return "admin/user-form";
     }
 
-    // Обработка создания
     @PostMapping
     public String createUser(@Valid @ModelAttribute("userForm") UserForm form,
                              BindingResult bindingResult,
@@ -53,7 +51,6 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    // НОВОЕ: форма редактирования
     @GetMapping("/{id}/edit")
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
@@ -67,7 +64,6 @@ public class AdminController {
         return "admin/user-form";
     }
 
-    // НОВОЕ: обработка обновления
     @PostMapping("/{id}")
     public String updateUser(@PathVariable Long id,
                              @Valid @ModelAttribute("userForm") UserForm form,
@@ -85,6 +81,13 @@ public class AdminController {
             model.addAttribute("isEdit", true);
             return "admin/user-form";
         }
+        return "redirect:/admin/users";
+    }
+
+    // НОВОЕ: удаление
+    @PostMapping("/{id}/delete")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
 }

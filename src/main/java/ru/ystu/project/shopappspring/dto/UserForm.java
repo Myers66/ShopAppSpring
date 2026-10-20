@@ -12,7 +12,6 @@ public class UserForm {
     @Size(min = 3, max = 50, message = "Логин должен быть от 3 до 50 символов")
     private String username;
 
-    @Size(min = 3, message = "Пароль должен быть минимум 3 символа")
     private String password;
 
     private Role role = Role.USER;

@@ -41,6 +41,10 @@ public class UserService {
         if (userRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("Пользователь с логином '" + username + "' уже существует");
         }
+        // Проверка пароля при создании
+        if (plainPassword == null || plainPassword.trim().length() < 3) {
+            throw new IllegalArgumentException("Пароль должен быть минимум 3 символа");
+        }
         User user = new User(username, passwordEncoder.encode(plainPassword), role, fullName);
         return userRepository.save(user);
     }
@@ -51,7 +55,11 @@ public class UserService {
         user.setUsername(username);
         user.setFullName(fullName);
         user.setRole(role);
+        // Проверка пароля только если он не пустой (значит, пользователь хочет сменить пароль)
         if (newPassword != null && !newPassword.isBlank()) {
+            if (newPassword.trim().length() < 3) {
+                throw new IllegalArgumentException("Пароль должен быть минимум 3 символа");
+            }
             user.setPasswordHash(passwordEncoder.encode(newPassword));
         }
         return userRepository.save(user);

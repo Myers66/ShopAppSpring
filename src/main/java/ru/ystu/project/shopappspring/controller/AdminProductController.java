@@ -51,7 +51,6 @@ public class AdminProductController {
         return "redirect:/admin/products";
     }
 
-    // НОВОЕ: форма редактирования
     @GetMapping("/{id}/edit")
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
@@ -66,7 +65,6 @@ public class AdminProductController {
         return "admin/product-form";
     }
 
-    // НОВОЕ: обработка обновления
     @PostMapping("/{id}")
     public String updateProduct(@PathVariable Long id,
                                 @Valid @ModelAttribute("productForm") ProductForm form,
@@ -84,6 +82,13 @@ public class AdminProductController {
             model.addAttribute("isEdit", true);
             return "admin/product-form";
         }
+        return "redirect:/admin/products";
+    }
+
+    // НОВОЕ: удаление
+    @PostMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
         return "redirect:/admin/products";
     }
 }

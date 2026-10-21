@@ -1,50 +1,28 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Товары (админка)</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
-<div class="container">
-    <nav>
-        <a th:href="@{/}">Главная</a>
-        <a th:href="@{/products}">Товары</a>
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}">Пользователи</a>
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/products}">Админ: товары</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
-    </nav>
-
-    <h1>Управление товарами</h1>
-    <p><a th:href="@{/admin/products/new}">➕ Создать товар</a></p>
-
-    <p th:if="${#lists.isEmpty(products)}">Товаров пока нет.</p>
-
-    <table th:unless="${#lists.isEmpty(products)}">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Название</th>
-            <th>Цена</th>
-            <th>Остаток</th>
-            <th>Описание</th>
-            <th>Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.id}">1</td>
-            <td th:text="${product.name}">Ноутбук</td>
-            <td th:text="${product.price} + ' руб.'">0 руб.</td>
-            <td th:text="${product.stockQuantity}">0</td>
-            <td th:text="${product.description}">Описание</td>
-            <td>
-                <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">Редактировать</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+<table th:unless="${#lists.isEmpty(products)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Остаток</th>
+        <th>Описание</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}">1</td>
+        <td th:text="${product.name}">Ноутбук</td>
+        <td th:text="${product.price} + ' руб.'">0 руб.</td>
+        <td th:text="${product.stockQuantity}">0</td>
+        <td th:text="${product.description}">Описание</td>
+        <td>
+            <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">Редактировать</a>
+            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post" style="display:inline">
+                <button type="submit" class="btn-danger"
+                        onclick="return confirm('Удалить товар?')">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -17,6 +17,7 @@
     </nav>
 
     <h1>Управление товарами</h1>
+    <p><a th:href="@{/admin/products/new}">➕ Создать товар</a></p>
 
     <p th:if="${#lists.isEmpty(products)}">Товаров пока нет.</p>
 

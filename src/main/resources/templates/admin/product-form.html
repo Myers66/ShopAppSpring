@@ -17,7 +17,8 @@
 
     <p class="error" th:if="${error}" th:text="${error}">Ошибка</p>
 
-    <form th:action="@{/admin/products}" th:object="${productForm}" method="post">
+    <form th:action="${isEdit} ? @{/admin/products/{id}(id=${productForm.id})} : @{/admin/products}"
+          th:object="${productForm}" method="post">
 
         <label>Название:</label><br>
         <input type="text" th:field="*{name}" required>
@@ -34,7 +35,7 @@
         <input type="number" th:field="*{stockQuantity}" required>
         <p class="error" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}"></p>
 
-        <input type="submit" value="Создать">
+        <input type="submit" th:value="${isEdit} ? 'Сохранить' : 'Создать'">
         <a th:href="@{/admin/products}">Отмена</a>
     </form>
 </div>

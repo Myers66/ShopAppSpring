@@ -41,6 +41,12 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(Long id, String name, double price, String description, int stockQuantity) {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Цена должна быть положительной");
+        }
+        if (stockQuantity < 0) {
+            throw new IllegalArgumentException("Остаток не может быть отрицательным");
+        }
         Product product = findById(id);
         product.setName(name);
         product.setPrice(price);

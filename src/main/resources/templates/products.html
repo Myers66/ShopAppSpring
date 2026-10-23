@@ -20,9 +20,8 @@
     <h1>Список товаров</h1>
 
     <!-- Форма поиска -->
-    <form th:action="@{/products}" method="get"
-          style="background:#f9f9f9; padding:15px; border-radius:6px; margin-bottom:20px;">
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+    <form th:action="@{/products}" method="get" class="search-form">
+        <div class="row">
             <div>
                 <label>Название:</label><br>
                 <input type="text" name="name" th:value="${searchName}" placeholder="Поиск по названию">
@@ -45,8 +44,7 @@
     <p th:if="${#lists.isEmpty(products)}">Товары не найдены.</p>
 
     <div th:unless="${#lists.isEmpty(products)}">
-        <div th:each="product : ${products}" class="product-card"
-             style="background:#f9f9f9; padding:15px; margin:10px 0; border-radius:6px; border-left:4px solid #007bff;">
+        <div th:each="product : ${products}" class="product-card">
             <h3 th:text="${product.name}">Название</h3>
             <p><strong>Цена:</strong> <span th:text="${product.price} + ' руб.'">0 руб.</span></p>
             <p><strong>В наличии:</strong> <span th:text="${product.stockQuantity}">0</span> шт.</p>

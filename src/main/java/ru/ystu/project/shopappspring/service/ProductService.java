@@ -69,4 +69,14 @@ public class ProductService {
     public List<Product> searchByPriceRange(double min, double max) {
         return productRepository.findByPriceBetween(min, max);
     }
+
+    @Transactional(readOnly = true)
+    public List<Product> searchProducts(String name, Double minPrice, Double maxPrice) {
+        return productRepository.findAll().stream()
+                .filter(p -> name == null || name.isBlank()
+                        || p.getName().toLowerCase().contains(name.toLowerCase()))
+                .filter(p -> minPrice == null || p.getPrice() >= minPrice)
+                .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
+                .toList();
+    }
 }

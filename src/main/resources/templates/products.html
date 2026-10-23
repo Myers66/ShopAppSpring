@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Товары</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/products}">Товары</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}">Пользователи</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/products}">Админ: товары</a>
+        <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+    </nav>
+
+    <h1>Список товаров</h1>
+
+    <p th:if="${#lists.isEmpty(products)}">Товаров пока нет.</p>
+
+    <div th:unless="${#lists.isEmpty(products)}">
+        <div th:each="product : ${products}" class="product-card"
+             style="background:#f9f9f9; padding:15px; margin:10px 0; border-radius:6px; border-left:4px solid #007bff;">
+            <h3 th:text="${product.name}">Название</h3>
+            <p><strong>Цена:</strong> <span th:text="${product.price} + ' руб.'">0 руб.</span></p>
+            <p><strong>В наличии:</strong> <span th:text="${product.stockQuantity}">0</span> шт.</p>
+            <p th:if="${product.description != null && !product.description.isEmpty()}">
+                <em th:text="${product.description}">Описание</em>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -29,7 +29,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         // Публичные страницы (доступны всем)
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/products", "/login", "/register", "/css/**", "/js/**", "/h2-console/**").permitAll()
                         // Только для ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         // Всё остальное — после входа

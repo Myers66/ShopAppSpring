@@ -1,0 +1,12 @@
+# Тестовая БД в памяти (создаётся заново при каждом запуске)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=false
+spring.jpa.open-in-view=false
+
+# Отключаем H2-консоль в тестах
+spring.h2.console.enabled=false

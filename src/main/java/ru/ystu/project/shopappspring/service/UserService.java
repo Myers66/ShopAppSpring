@@ -66,6 +66,19 @@ public class UserService {
     }
 
     @Transactional
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+        User user = findById(userId);
+        if (!passwordEncoder.matches(oldPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Неверный текущий пароль");
+        }
+        if (newPassword == null || newPassword.trim().length() < 3) {
+            throw new IllegalArgumentException("Новый пароль должен быть минимум 3 символа");
+        }
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

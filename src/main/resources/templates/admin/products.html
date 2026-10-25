@@ -16,6 +16,7 @@
         <td th:text="${product.price} + ' руб.'">0 руб.</td>
         <td th:text="${product.stockQuantity}">0</td>
         <td th:text="${product.description}">Описание</td>
+        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
         <td>
             <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">Редактировать</a>
             <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post" style="display:inline">

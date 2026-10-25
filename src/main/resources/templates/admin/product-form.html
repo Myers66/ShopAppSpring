@@ -10,6 +10,7 @@
 <div class="container">
     <nav>
         <a th:href="@{/}">Главная</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
         <a th:href="@{/admin/products}">Назад к списку</a>
     </nav>
 

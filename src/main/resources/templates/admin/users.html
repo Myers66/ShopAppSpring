@@ -16,6 +16,7 @@
         <td th:text="${user.role}">ADMIN</td>
         <td th:text="${user.fullName}">Администратор</td>
         <td th:text="${user.createdAt}">2026-01-01</td>
+        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
         <td>
             <a th:href="@{/admin/users/{id}/edit(id=${user.id})}">Редактировать</a>
             <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display:inline">

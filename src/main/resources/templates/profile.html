@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <nav>
+        <a th:href="@{/}">Главная</a>
+        <a th:href="@{/products}">Товары</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}">Пользователи</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/products}">Админ: товары</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
+        <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+    </nav>
+
+    <h1>Мой профиль</h1>
+
+    <p style="color:green" th:if="${param.success}">Пароль успешно изменён!</p>
+    <p class="error" th:if="${error}" th:text="${error}">Ошибка</p>
+
+    <div style="background:#f8f9fa; padding:20px; border-radius:8px; margin-bottom:20px;">
+        <h2>Информация об аккаунте</h2>
+        <p><strong>ID:</strong> <span th:text="${user.id}">1</span></p>
+        <p><strong>Логин:</strong> <span th:text="${user.username}">admin</span></p>
+        <p><strong>Полное имя:</strong> <span th:text="${user.fullName}">Администратор</span></p>
+        <p><strong>Роль:</strong> <span th:text="${user.role}">ADMIN</span></p>
+        <p><strong>Дата регистрации:</strong> <span th:text="${user.createdAt}">2026-01-01</span></p>
+    </div>
+
+    <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
+        <h2>Смена пароля</h2>
+        <form th:action="@{/profile/password}" th:object="${passwordForm}" method="post">
+            <label>Текущий пароль:</label><br>
+            <input type="password" th:field="*{oldPassword}" required><br>
+
+            <label>Новый пароль:</label><br>
+            <input type="password" th:field="*{newPassword}" required><br>
+
+            <label>Подтвердите новый пароль:</label><br>
+            <input type="password" th:field="*{confirmPassword}" required><br>
+
+            <input type="submit" value="Сменить пароль">
+        </form>
+    </div>
+</div>
+</body>
+</html>

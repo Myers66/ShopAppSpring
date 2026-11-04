@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Вход</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
     <h2>Вход в систему</h2>
-
     <p class="error" th:if="${param.error}">Неверный логин или пароль</p>
     <p style="color:green" th:if="${param.logout}">Вы вышли из системы</p>
     <p style="color:green" th:if="${param.registered}">Регистрация успешна! Войдите.</p>
-
-    <form th:action="@{/login}" method="post">
-        <label>Логин:</label><br>
-        <input type="text" name="username" required><br>
-        <label>Пароль:</label><br>
-        <input type="password" name="password" required><br>
-        <input type="submit" value="Войти">
+    <form class="entity-form auth-form" th:action="@{/login}" method="post">
+        <div class="form-field"><label for="username">Логин:</label><input id="username" type="text" name="username" autocomplete="username" required></div>
+        <div class="form-field"><label for="password">Пароль:</label><input id="password" type="password" name="password" autocomplete="current-password" required></div>
+        <div class="form-actions"><button type="submit">Войти</button></div>
     </form>
-
     <p>Нет аккаунта? <a th:href="@{/register}">Зарегистрироваться</a></p>
 </div>
 </body>

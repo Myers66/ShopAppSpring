@@ -91,4 +91,26 @@ public class AdminProductController {
         productService.deleteProduct(id);
         return "redirect:/admin/products";
     }
+
+    @PostMapping("/save")
+    public String saveProduct(@Valid @ModelAttribute("productForm") ProductForm form,
+                             BindingResult bindingResult, Model model) {
+        boolean isEdit = form.getId() != null;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isEdit", isEdit);
+            return "admin/product-form";
+        }
+        try {
+            if (isEdit) {
+                productService.updateProduct(form.getId(), form.getName(), form.getPrice(), form.getDescription(), form.getStockQuantity());
+            } else {
+                productService.createProduct(form.getName(), form.getPrice(), form.getDescription(), form.getStockQuantity());
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("isEdit", isEdit);
+            return "admin/product-form";
+        }
+        return "redirect:/admin/products";
+    }
 }

@@ -52,6 +52,10 @@ public class UserService {
     @Transactional
     public User updateUser(Long id, String username, String fullName, Role role, String newPassword) {
         User user = findById(id);
+        User existing = userRepository.findByUsername(username).orElse(null);
+        if (existing != null && !existing.getId().equals(id)) {
+            throw new IllegalArgumentException("Пользователь с логином '" + username + "' уже существует");
+        }
         user.setUsername(username);
         user.setFullName(fullName);
         user.setRole(role);

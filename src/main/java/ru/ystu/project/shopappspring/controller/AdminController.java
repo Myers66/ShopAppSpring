@@ -90,4 +90,26 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
+
+    @PostMapping("/save")
+    public String saveUser(@Valid @ModelAttribute("userForm") UserForm form,
+                             BindingResult bindingResult, Model model) {
+        boolean isEdit = form.getId() != null;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isEdit", isEdit);
+            return "admin/user-form";
+        }
+        try {
+            if (isEdit) {
+                userService.updateUser(form.getId(), form.getUsername(), form.getFullName(), form.getRole(), form.getPassword());
+            } else {
+                userService.createUser(form.getUsername(), form.getPassword(), form.getRole(), form.getFullName());
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("isEdit", isEdit);
+            return "admin/user-form";
+        }
+        return "redirect:/admin/users";
+    }
 }

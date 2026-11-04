@@ -294,3 +294,22 @@ td button {
     background: #0056b3;
     text-decoration: none;
 }
+/* Forms: labels always sit above their respective controls. */
+.entity-form { max-width: 600px; }
+.entity-form .form-field { display: flex; flex-direction: column; align-items: stretch; margin-bottom: 14px; }
+.entity-form .form-field label { display: block; margin: 0 0 5px; }
+.entity-form .form-field input, .entity-form .form-field select, .entity-form .form-field textarea { width: 100%; min-width: 0; margin: 0; }
+.entity-form .form-actions { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+.table-scroll { overflow-x: auto; }
+.inline-form { display: inline; margin: 0; }
+.nav-logout { display: inline; margin: 0; }
+.nav-logout button { margin: 0; padding: 8px 14px; }
+@media(max-width: 600px) { .container { padding: 20px; } body { padding: 12px; } }
+
+/* Registration and login: vertically stacked, responsive controls. */
+.auth-form { width: 100%; max-width: 420px; }
+.auth-form .form-field { display: flex; flex-direction: column; align-items: stretch; margin-bottom: 16px; }
+.auth-form .form-field label { display: block; margin: 0 0 6px; }
+.auth-form .form-field input { display: block; width: 100%; min-width: 0; margin: 0; }
+.auth-form .form-actions { display: flex; margin-top: 12px; }
+.auth-form .form-actions button { margin-top: 0; }

@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Пользователь</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Форма</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
     <nav>
         <a th:href="@{/}">Главная</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
-        <a th:href="@{/admin/users}">Назад к списку</a>
+        <a th:href="@{/products}">Поиск товаров</a>
+        <a th:href="@{/admin/users}">Пользователи</a>
+        <a th:href="@{/admin/products}">Управление товарами</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Мой профиль</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="nav-logout"><button type="submit">Выйти</button></form>
     </nav>
-
-    <h1 th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Пользователь</h1>
-
+    <h1 th:text="${isEdit} ? 'Редактирование пользователя' : 'Создание пользователя'">Форма</h1>
     <p class="error" th:if="${error}" th:text="${error}">Ошибка</p>
-
-    <form th:action="@{/admin/users}" th:object="${userForm}" method="post">
-
-        <label>Логин:</label><br>
-        <input type="text" th:field="*{username}" required>
-        <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-
-        <label>Пароль:</label><br>
-        <input type="password" th:field="*{password}" required>
-        <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-
-        <label>Роль:</label><br>
-        <select th:field="*{role}">
-            <option th:each="r : ${T(ru.ystu.project.shopappspring.model.Role).values()}"
-                    th:value="${r}" th:text="${r}">USER</option>
-        </select><br>
-
-        <label>Полное имя:</label><br>
-        <input type="text" th:field="*{fullName}"><br>
-
-        <input type="submit" value="Создать">
-        <a th:href="@{/admin/users}">Отмена</a>
+    <form class="entity-form" th:action="@{/admin/users/save}" th:object="${userForm}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-field"><label for="username">Логин</label><input id="username" type="text" th:field="*{username}" required minlength="3"><p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p></div>
+        <div class="form-field"><label for="password">Пароль <span th:if="${isEdit}">(оставьте пустым, чтобы не менять)</span></label><input id="password" type="password" th:field="*{password}" th:required="${!isEdit}" th:attr="minlength=${isEdit} ? null : 3"><p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p></div>
+        <div class="form-field"><label for="role">Роль</label><select id="role" th:field="*{role}"><option th:each="r : ${T(ru.ystu.project.shopappspring.model.Role).values()}" th:value="${r}" th:text="${r}">USER</option></select></div>
+        <div class="form-field"><label for="fullName">Полное имя</label><input id="fullName" type="text" th:field="*{fullName}"></div>
+        <div class="form-actions">
+            <button type="submit" th:text="${isEdit} ? 'Сохранить изменения' : 'Создать'">Сохранить</button>
+            <a th:href="@{/admin/users}">Отмена</a>
+        </div>
     </form>
 </div>
 </body>

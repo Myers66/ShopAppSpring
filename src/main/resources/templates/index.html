@@ -15,7 +15,7 @@
         <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/products}">Админ: товары</a>
         <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Профиль</a>
         <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Выйти</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="nav-logout"><button type="submit">Выйти</button></form>
     </nav>
 
     <h1>Добро пожаловать в ShopApp!</h1>
